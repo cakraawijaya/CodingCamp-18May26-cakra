@@ -127,18 +127,17 @@
           <p id="greeting-text" class="text-4xl font-extrabold text-blue-500 mt-2 leading-tight tracking-tight">Hello!</p>
 
           <!-- User name — smaller, lighter -->
-          <p id="username-display" class="text-lg font-medium muted mt-2 tracking-wide"></p>
+          <p id="username-display" class="text-lg font-medium muted mt-2 pb-3 tracking-wide"></p>
 
-          <!-- Spacer -->
-          <div class="mt-6 w-full max-w-xs">
-            <!-- Name input + save button — same height, full-width row -->
+          <!-- Name input row -->
+          <div class="mt-2 pb-3 w-full max-w-sm">
             <div id="name-input-row" class="flex gap-2 w-full">
               <input
                 id="username-input"
                 type="text"
                 placeholder="Enter your name…"
                 class="input flex-1 text-center text-sm h-10 mt-1"
-                maxlength="30"
+                maxlength="40"
                 autocomplete="given-name"
                 aria-label="Your name"
               />
@@ -147,6 +146,16 @@
                 <span>Save</span>
               </button>
             </div>
+          </div>
+
+          <!-- Timezone selector -->
+          <div class="flex items-center gap-2 mt-4">
+            <label for="tz-select" class="text-xs muted">Timezone:</label>
+            <select id="tz-select" class="input text-sm py-1 px-2 h-8" aria-label="Select timezone">
+              <option value="7">WIB (UTC+7)</option>
+              <option value="8">WITA (UTC+8)</option>
+              <option value="9">WIT (UTC+9)</option>
+            </select>
           </div>
 
         </div>
@@ -175,7 +184,7 @@
                 class="input w-16 text-center text-sm"
                 aria-label="Timer duration in minutes"
               />
-              <span class="text-sm muted">min</span>
+              <span class="text-sm muted">minutes</span>
               <button id="btn-set-timer" class="btn btn-slate py-1 px-3 text-xs">
                 <i class="fa-solid fa-check" aria-hidden="true"></i> Set
               </button>
@@ -192,11 +201,9 @@
             </div>
 
             <div class="flex gap-3" role="group" aria-label="Timer controls">
-              <button id="btn-start" class="btn btn-green mt-1">
-                <i class="fa-solid fa-play" aria-hidden="true"></i> Start
-              </button>
-              <button id="btn-stop" class="btn btn-amber hidden mt-1">
-                <i class="fa-solid fa-pause" aria-hidden="true"></i> Stop
+              <button id="btn-start-stop" class="btn btn-green mt-1">
+                <i class="fa-solid fa-play" aria-hidden="true"></i>
+                <span>Start</span>
               </button>
               <button id="btn-reset" class="btn btn-slate mt-1">
                 <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset

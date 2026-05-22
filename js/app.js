@@ -18,6 +18,7 @@ const StorageManager = {
     USERNAME:      'tdl_username',
     TIMER_MINUTES: 'tdl_timer_minutes',
     SORT:          'tdl_sort',
+    TZ_OFFSET:     'tdl_tz_offset',
   },
 
   /**
@@ -141,20 +142,41 @@ const ThemeManager = {
 /* ──────────────────────────────────────────────
    GreetingWidget
    Displays current time, date, and greeting.
-   Supports custom user name.  [NEW FEATURE 2]
+   Supports custom user name + WIB/WITA/WIT timezone.
    ────────────────────────────────────────────── */
 const GreetingWidget = {
   _intervalId: null,
   _name: '',
+  _tzOffset: 7, // UTC+7 WIB default
+
+  /** Get current Date adjusted to selected UTC offset. */
+  _nowInTz() {
+    const utcMs = Date.now() + new Date().getTimezoneOffset() * 60_000;
+    return new Date(utcMs + this._tzOffset * 3_600_000);
+  },
 
   init(storage) {
+    // Load saved timezone
+    const savedTz = parseInt(storage.loadString(storage.KEYS.TZ_OFFSET, '7'), 10);
+    this._tzOffset = [7, 8, 9].includes(savedTz) ? savedTz : 7;
+
+    const tzSelect = document.getElementById('tz-select');
+    if (tzSelect) {
+      tzSelect.value = String(this._tzOffset);
+      tzSelect.addEventListener('change', () => {
+        this._tzOffset = parseInt(tzSelect.value, 10);
+        storage.saveString(storage.KEYS.TZ_OFFSET, String(this._tzOffset));
+        this._tick();
+      });
+    }
+
     // Load saved name
     this._name = storage.loadString(storage.KEYS.USERNAME, '');
     const input    = document.getElementById('username-input');
     const inputRow = document.getElementById('name-input-row');
 
-    // Pre-fill input if name already saved (from a previous session)
     if (input && this._name) input.value = this._name;
+    if (this._name && inputRow) inputRow.classList.add('hidden');
 
     // Save name button — hide input row immediately after save, no toast
     document.getElementById('btn-save-name').addEventListener('click', () => {
@@ -183,16 +205,15 @@ const GreetingWidget = {
   },
 
   _tick() {
-    const now = new Date();
-    const timeEl    = document.getElementById('time');
-    const dateEl    = document.getElementById('date');
-    const greetEl   = document.getElementById('greeting-text');
-    const nameDisp  = document.getElementById('username-display');
+    const now      = this._nowInTz();
+    const timeEl   = document.getElementById('time');
+    const dateEl   = document.getElementById('date');
+    const greetEl  = document.getElementById('greeting-text');
+    const nameDisp = document.getElementById('username-display');
 
     if (timeEl)   timeEl.textContent  = this.formatTime(now);
     if (dateEl)   dateEl.textContent  = this.formatDate(now);
     if (greetEl)  greetEl.textContent = this.getGreeting(now.getHours());
-    // Name shown separately, smaller, below the greeting phrase
     if (nameDisp) nameDisp.textContent = this._name ? `${this._name}` : '';
   },
 
@@ -222,15 +243,18 @@ const GreetingWidget = {
   },
 
   /**
-   * Return a greeting phrase based on hour (0–23).
-   * Name is rendered separately in #username-display.
+   * Return greeting based on hour in selected timezone.
+   * Morning:   00:00 – 11:59
+   * Afternoon: 12:00 – 17:00
+   * Evening:   17:01 – 21:00
+   * Night:     21:01 – 23:59
    * @param {number} hour
    * @returns {string}
    */
   getGreeting(hour) {
-    if (hour >= 5 && hour <= 11)  return 'Good Morning';
+    if (hour >= 0  && hour <= 11) return 'Good Morning';
     if (hour >= 12 && hour <= 17) return 'Good Afternoon';
-    if (hour >= 18 && hour <= 20) return 'Good Evening';
+    if (hour >= 18 && hour <= 21) return 'Good Evening';
     return 'Good Night';
   },
 };
@@ -281,8 +305,10 @@ const FocusTimer = {
       if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-set-timer').click(); }
     });
 
-    document.getElementById('btn-start').addEventListener('click', () => this.start());
-    document.getElementById('btn-stop').addEventListener('click', () => this.stop());
+    document.getElementById('btn-start-stop').addEventListener('click', () => {
+      if (this.state === 'running') this.stop();
+      else this.start();
+    });
     document.getElementById('btn-reset').addEventListener('click', () => this.reset());
     this._render();
   },
@@ -336,20 +362,19 @@ const FocusTimer = {
   },
 
   _render() {
-    const display  = document.getElementById('timer-display');
-    const btnStart = document.getElementById('btn-start');
-    const btnStop  = document.getElementById('btn-stop');
-    const status   = document.getElementById('timer-status');
+    const display    = document.getElementById('timer-display');
+    const startStop  = document.getElementById('btn-start-stop');
+    const status     = document.getElementById('timer-status');
 
     if (display) display.textContent = this.formatTime(this.remainingSeconds);
 
-    if (btnStart && btnStop) {
+    if (startStop) {
       if (this.state === 'running') {
-        btnStart.classList.add('hidden');
-        btnStop.classList.remove('hidden');
+        startStop.className = 'btn btn-amber mt-1';
+        startStop.innerHTML = '<i class="fa-solid fa-pause" aria-hidden="true"></i><span>Stop</span>';
       } else {
-        btnStart.classList.remove('hidden');
-        btnStop.classList.add('hidden');
+        startStop.className = 'btn btn-green mt-1';
+        startStop.innerHTML = '<i class="fa-solid fa-play" aria-hidden="true"></i><span>Start</span>';
       }
     }
 
