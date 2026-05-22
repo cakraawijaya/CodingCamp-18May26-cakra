@@ -837,6 +837,18 @@ function init() {
     });
   }
 
+  // Refresh button — clears all app data then reloads (full reset)
+  const refreshBtn = document.getElementById('btn-refresh');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      // Remove all tdl_ keys from localStorage
+      Object.values(StorageManager.KEYS).forEach((key) => {
+        localStorage.removeItem(key);
+      });
+      location.reload();
+    });
+  }
+
   ThemeManager.init(StorageManager);
   GreetingWidget.init(StorageManager);
   FocusTimer.init(StorageManager);
