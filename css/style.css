@@ -1,0 +1,310 @@
+/* ============================================================
+   Todo-Life Dashboard — Custom Styles
+   Tailwind utility classes handle most of the layout.
+   This file adds component patterns, transitions, and
+   any overrides that Tailwind CDN cannot express inline.
+   ============================================================ */
+
+/* ── Base ── */
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  color: #1e293b; /* slate-800 */
+}
+
+/* ── Card component ── */
+.card {
+  background: #ffffff;
+  border-radius: 1rem;          /* rounded-2xl */
+  box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+  padding: 1.5rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,.1), 0 8px 24px rgba(0,0,0,.08);
+}
+
+/* ── Section title ── */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #475569; /* slate-600 */
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Input ── */
+.input {
+  border: 1.5px solid #e2e8f0; /* slate-200 */
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  color: #1e293b;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-width: 0;
+}
+
+.input:focus {
+  border-color: #3b82f6; /* blue-500 */
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+  background: #ffffff;
+}
+
+.input::placeholder {
+  color: #94a3b8; /* slate-400 */
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Blue */
+.btn-blue {
+  background: #3b82f6;
+  color: #ffffff;
+}
+.btn-blue:hover {
+  background: #2563eb;
+}
+
+/* Green */
+.btn-green {
+  background: #22c55e;
+  color: #ffffff;
+}
+.btn-green:hover {
+  background: #16a34a;
+}
+
+/* Amber */
+.btn-amber {
+  background: #f59e0b;
+  color: #ffffff;
+}
+.btn-amber:hover {
+  background: #d97706;
+}
+
+/* Slate */
+.btn-slate {
+  background: #e2e8f0;
+  color: #475569;
+}
+.btn-slate:hover {
+  background: #cbd5e1;
+}
+
+/* Icon-only small buttons used inside task/link rows */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  flex-shrink: 0;
+}
+
+.btn-icon:active {
+  transform: scale(0.93);
+}
+
+.btn-icon:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.btn-icon-edit {
+  background: #eff6ff;
+  color: #3b82f6;
+}
+.btn-icon-edit:hover {
+  background: #dbeafe;
+}
+
+.btn-icon-delete {
+  background: #fff1f2;
+  color: #f43f5e;
+}
+.btn-icon-delete:hover {
+  background: #ffe4e6;
+}
+
+.btn-icon-check {
+  background: #f0fdf4;
+  color: #22c55e;
+  border: 1.5px solid #bbf7d0;
+}
+.btn-icon-check:hover {
+  background: #dcfce7;
+}
+
+.btn-icon-check.checked {
+  background: #22c55e;
+  color: #ffffff;
+  border-color: #22c55e;
+}
+
+/* ── Task item ── */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.625rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.task-item:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+}
+
+.task-item.completed {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 0.9375rem;
+  color: #334155;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.task-text.line-through {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+/* Inline edit input inside task row */
+.task-edit-input {
+  flex: 1;
+  border: 1.5px solid #3b82f6;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9375rem;
+  color: #1e293b;
+  background: #ffffff;
+  outline: none;
+  min-width: 0;
+}
+
+/* ── Quick link button ── */
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4375rem 0.875rem;
+  border-radius: 9999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid #bfdbfe;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  position: relative;
+}
+
+.link-btn:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.link-btn:active {
+  transform: scale(0.96);
+}
+
+.link-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Delete badge on link button */
+.link-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 9999px;
+  background: #f43f5e;
+  color: #ffffff;
+  font-size: 0.625rem;
+  border: none;
+  cursor: pointer;
+  margin-left: 0.125rem;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.link-delete-btn:hover {
+  background: #e11d48;
+}
+
+/* ── Placeholder messages ── */
+.placeholder-msg {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1.5rem 0;
+  font-style: italic;
+}
+
+/* ── Toast ── */
+#toast.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Timer status text ── */
+#timer-status {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* ── Responsive min font sizes ── */
+@media (max-width: 640px) {
+  .card {
+    padding: 1.125rem;
+  }
+
+  #timer-display {
+    font-size: 3.5rem;
+  }
+}
