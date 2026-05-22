@@ -574,6 +574,13 @@ const TodoList = {
     }
 
     const oldDesc = task.description;
+
+    // Jangan update kalau value sama
+    if (oldDesc === trimmed) {
+      this._render();
+      return true;
+    }
+
     task.description = trimmed;
     this._persist();
     this._render();
@@ -609,7 +616,7 @@ const TodoList = {
     this._persist();
     this._render();
     if (task) {
-      Toast.show(`Task "${task.description}" deleted.`, 2500);
+      Toast.show(`Task deleted: &nbsp;<strong>${task.description}</strong>`, 2500, true);
     }
   },
 
