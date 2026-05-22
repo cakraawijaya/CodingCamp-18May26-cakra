@@ -814,6 +814,22 @@ function init() {
   const yearEl = document.getElementById('footer-year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Scroll-to-top button
+  const scrollBtn = document.getElementById('btn-scroll-top');
+  if (scrollBtn) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.add('visible');
+      } else {
+        scrollBtn.classList.remove('visible');
+      }
+    }, { passive: true });
+
+    scrollBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   ThemeManager.init(StorageManager);
   GreetingWidget.init(StorageManager);
   FocusTimer.init(StorageManager);
