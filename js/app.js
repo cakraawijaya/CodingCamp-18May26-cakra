@@ -210,17 +210,29 @@ const GreetingWidget = {
     // Save name button — hide input row immediately after save, no toast
     document.getElementById('btn-save-name').addEventListener('click', () => {
       const val = (input.value || '').trim();
+
+      const errorEl = document.getElementById('name-error');
+
+      // Empty validation
+      if (!val) {
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      // Hide error if valid
+      errorEl.classList.add('hidden');
+
       this._name = val;
       storage.saveString(storage.KEYS.USERNAME, val);
 
       // Update name display
       const nameDisp = document.getElementById('username-display');
-      if (nameDisp) nameDisp.textContent = val ? `${val}` : '';
+      if (nameDisp) nameDisp.textContent = val;
 
       // Hide input row until next page reload
       if (inputRow) inputRow.classList.add('hidden');
 
-      Toast.show(val ? `Name saved: <strong>${val}</strong>` : 'Name cleared.', 3000, true);
+      Toast.show(`Name saved: &nbsp;<strong>${val}</strong>`, 3000, true);
     });
 
     // Save on Enter key in name input
@@ -229,6 +241,11 @@ const GreetingWidget = {
         e.preventDefault();
         document.getElementById('btn-save-name').click();
       }
+    });
+
+    // Clear error on input
+    document.getElementById('username-input').addEventListener('input', () => {
+      document.getElementById('name-error').classList.add('hidden');
     });
 
     this._tick();
@@ -306,7 +323,7 @@ const FocusTimer = {
   init(storage) {
     // Load saved duration
     const savedMin = parseInt(storage.loadString(storage.KEYS.TIMER_MINUTES, '25'), 10);
-    const minutes = (savedMin >= 1 && savedMin <= 60) ? savedMin : 25;
+    const minutes = (savedMin >= 25 && savedMin <= 60) ? savedMin : 25;
     this.INITIAL_SECONDS = minutes * 60;
     this.remainingSeconds = this.INITIAL_SECONDS;
 
@@ -320,15 +337,15 @@ const FocusTimer = {
         return;
       }
       const val = parseInt(minInput.value, 10);
-      if (!val || val < 1 || val > 60) {
-        Toast.show('Duration must be 1–60 minutes.', 2500);
+      if (!val || val < 25 || val > 60) {
+        Toast.show('Duration must be 25–60 minutes.', 2500);
         return;
       }
       this.INITIAL_SECONDS = val * 60;
       this.remainingSeconds = this.INITIAL_SECONDS;
       storage.saveString(storage.KEYS.TIMER_MINUTES, String(val));
       this._render();
-      Toast.show(`Timer set to ${val} min.`, 2000);
+      Toast.show(`Timer set to ${val} minutes.`, 2000);
     });
 
     // Allow Enter key in duration input
@@ -556,9 +573,17 @@ const TodoList = {
       return false;
     }
 
+    const oldDesc = task.description;
     task.description = trimmed;
     this._persist();
     this._render();
+
+    Toast.show(
+      `Task updated:<br><strong>${oldDesc}</strong> → <strong>${trimmed}</strong>`,
+      3000,
+      true
+    );
+
     return true;
   },
 
@@ -579,9 +604,13 @@ const TodoList = {
    * @param {string} id
    */
   deleteTask(id) {
+    const task = this.tasks.find((t) => t.id === id);
     this.tasks = this.tasks.filter((t) => t.id !== id);
     this._persist();
     this._render();
+    if (task) {
+      Toast.show(`Task "${task.description}" deleted.`, 2500);
+    }
   },
 
   /**
@@ -777,6 +806,7 @@ const QuickLinks = {
     this.links = this.links.filter((l) => l.id !== id);
     this._persist();
     this._render();
+    Toast.show('Link deleted successfully.', 2500);
   },
 
   /**

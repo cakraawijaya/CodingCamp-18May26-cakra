@@ -130,14 +130,14 @@
           <p id="username-display" class="text-lg font-medium muted mt-4 pb-3 tracking-wide"></p>
 
           <!-- Name input row -->
-          <div class="pb-3 w-full max-w-sm">
+          <div class="pb-3 w-full max-w-xs">
             <div id="name-input-row" class="flex gap-2 w-full">
               <input
                 id="username-input"
                 type="text"
                 placeholder="Enter your name…"
                 class="input flex-1 text-center text-sm h-10 mt-1"
-                maxlength="40"
+                maxlength="60"
                 autocomplete="given-name"
                 aria-label="Your name"
               />
@@ -146,6 +146,10 @@
                 <span>Save</span>
               </button>
             </div>
+            <p id="name-error" class="text-red-500 text-sm mt-4 mb-2 py-2 hidden" role="alert">
+              <i class="fa-solid fa-circle-exclamation mr-1" aria-hidden="true"></i>
+              <span id="name-error-msg">Name cannot be empty.</span>
+            </p>
           </div>
 
           <!-- Timezone selector -->
@@ -178,7 +182,7 @@
               <input
                 id="timer-minutes"
                 type="number"
-                min="1"
+                min="25"
                 max="60"
                 value="25"
                 class="input w-16 text-center text-sm"
