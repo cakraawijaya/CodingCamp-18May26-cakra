@@ -814,6 +814,13 @@ function init() {
   const yearEl = document.getElementById('footer-year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Dismiss loading screen
+  const loadingScreen = document.getElementById('loading-screen');
+  if (loadingScreen) {
+    // Small delay so the progress bar animation completes visually
+    setTimeout(() => loadingScreen.classList.add('hide'), 1500);
+  }
+
   // Scroll-to-top button
   const scrollBtn = document.getElementById('btn-scroll-top');
   if (scrollBtn) {

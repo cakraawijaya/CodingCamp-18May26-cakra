@@ -412,6 +412,107 @@ html.dark .btn-icon-check:hover { background: #14532d; }
 /* ── Timer status ── */
 #timer-status { font-size: 0.75rem; color: var(--text-faint); }
 
+/* ── Loading screen ── */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #0d2137 100%);
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loading-screen.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Animated logo icon */
+.loader-logo {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.25rem;
+  color: #ffffff;
+  box-shadow: 0 0 32px rgba(99,102,241,.6), 0 0 64px rgba(59,130,246,.3);
+  animation: loader-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes loader-pulse {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 32px rgba(99,102,241,.6), 0 0 64px rgba(59,130,246,.3); }
+  50%       { transform: scale(1.08); box-shadow: 0 0 48px rgba(99,102,241,.8), 0 0 96px rgba(59,130,246,.5); }
+}
+
+.loader-title {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.01em;
+  margin-top: 0.25rem;
+}
+
+/* Progress bar */
+.loader-bar-track {
+  width: 14rem;
+  height: 4px;
+  background: rgba(255,255,255,.12);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #3b82f6, #6366f1, #a78bfa);
+  background-size: 200% 100%;
+  animation:
+    loader-progress 1.4s ease-out forwards,
+    loader-shimmer  1.4s linear infinite;
+}
+
+@keyframes loader-progress {
+  0%   { width: 0%; }
+  60%  { width: 80%; }
+  100% { width: 100%; }
+}
+
+@keyframes loader-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.loader-sub {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  color: #64748b;
+  letter-spacing: 0.04em;
+  animation: loader-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes loader-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
 /* ── Scroll-to-top button ── */
 .scroll-top-btn {
   position: fixed;

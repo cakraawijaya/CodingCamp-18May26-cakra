@@ -48,6 +48,22 @@
   <body class="flex flex-col min-h-screen">
 
     <!-- ══════════════════════════════════════════
+         LOADING SCREEN — dismissed by JS on DOMContentLoaded
+         ══════════════════════════════════════════ -->
+    <div id="loading-screen" aria-hidden="true">
+      <div class="loader-content">
+        <div class="loader-logo">
+          <i class="fa-solid fa-gauge-high"></i>
+        </div>
+        <p class="loader-title">Todo-Life Dashboard</p>
+        <div class="loader-bar-track">
+          <div class="loader-bar-fill"></div>
+        </div>
+        <p class="loader-sub">Loading your workspace…</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
          NAVBAR — sticky, transparent on scroll
          ══════════════════════════════════════════ -->
     <header id="navbar" class="navbar sticky top-0 z-50 transition-all duration-300">
