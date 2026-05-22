@@ -97,13 +97,42 @@ const Toast = {
    * @param {string} message
    * @param {number} [duration=3000]
    */
-  show(message, duration = 3000) {
-    const el = document.getElementById('toast');
+  show(message, duration = 3000, html = false) {
+    const el      = document.getElementById('toast');
+    const iconEl  = document.getElementById('toast-icon');
+    const msgEl   = document.getElementById('toast-msg');
     if (!el) return;
-    el.textContent = message;
+
+    // Pick FA icon class based on message keywords
+    let iconClass = 'fa-solid fa-circle-info';
+    if (/complete|done|success|great|break/i.test(message))   iconClass = 'fa-solid fa-circle-check';
+    else if (/error|fail|full|invalid|must|cannot|already|empty/i.test(message)) iconClass = 'fa-solid fa-triangle-exclamation';
+    else if (/timer|set|min/i.test(message))   iconClass = 'fa-solid fa-stopwatch';
+    else if (/reset|clear/i.test(message))     iconClass = 'fa-solid fa-rotate-left';
+    else if (/saved|name|user/i.test(message)) iconClass = 'fa-solid fa-user-check';
+    else if (/added|task/i.test(message))      iconClass = 'fa-solid fa-list-check';
+    else if (/link/i.test(message))            iconClass = 'fa-solid fa-link';
+    else if (/dark|light|theme/i.test(message)) iconClass = 'fa-solid fa-circle-half-stroke';
+
+    if (iconEl) { iconEl.className = `${iconClass} text-lg shrink-0`; }
+    if (msgEl)  {
+      if (html) msgEl.innerHTML = message;
+      else      msgEl.textContent = message;
+    }
+
     el.classList.add('show');
     clearTimeout(this._timer);
     this._timer = setTimeout(() => el.classList.remove('show'), duration);
+  },
+
+  _bindClose() {
+    const closeBtn = document.getElementById('toast-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        document.getElementById('toast').classList.remove('show');
+        clearTimeout(this._timer);
+      });
+    }
   },
 };
 
@@ -190,6 +219,8 @@ const GreetingWidget = {
 
       // Hide input row until next page reload
       if (inputRow) inputRow.classList.add('hidden');
+
+      Toast.show(val ? `Name saved: <strong>${val}</strong>` : 'Name cleared.', 3000, true);
     });
 
     // Save on Enter key in name input
@@ -297,7 +328,7 @@ const FocusTimer = {
       this.remainingSeconds = this.INITIAL_SECONDS;
       storage.saveString(storage.KEYS.TIMER_MINUTES, String(val));
       this._render();
-      Toast.show(`⏱ Timer set to ${val} min.`, 2000);
+      Toast.show(`Timer set to ${val} min.`, 2000);
     });
 
     // Allow Enter key in duration input
@@ -456,6 +487,7 @@ const TodoList = {
         errorEl.classList.add('hidden');
         input.value = '';
         input.focus();
+        Toast.show('Task added successfully.', 2500);
       }
     });
 
@@ -699,6 +731,7 @@ const QuickLinks = {
         labelInput.value = '';
         urlInput.value   = '';
         labelInput.focus();
+        Toast.show('Link added successfully.', 2500);
       }
     });
 
@@ -842,9 +875,11 @@ function init() {
   // Dismiss loading screen
   const loadingScreen = document.getElementById('loading-screen');
   if (loadingScreen) {
-    // Small delay so the progress bar animation completes visually
     setTimeout(() => loadingScreen.classList.add('hide'), 1500);
   }
+
+  // Bind toast close button
+  Toast._bindClose();
 
   // Scroll-to-top button
   const scrollBtn = document.getElementById('btn-scroll-top');

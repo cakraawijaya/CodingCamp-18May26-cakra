@@ -406,8 +406,21 @@ html.dark .btn-icon-check:hover { background: #14532d; }
 }
 
 /* ── Toast ── */
-.toast-bg { background: var(--toast-bg); }
-#toast.show { opacity: 1; pointer-events: auto; }
+.toast-bg { background: var(--toast-bg); color: #fff; }
+
+.toast-header {
+  background: rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+#toast {
+  transform: translateX(1rem);
+}
+#toast.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
 
 /* ── Timer status ── */
 #timer-status { font-size: 0.75rem; color: var(--text-faint); }

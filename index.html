@@ -127,10 +127,10 @@
           <p id="greeting-text" class="text-4xl font-extrabold text-blue-500 mt-2 leading-tight tracking-tight">Hello!</p>
 
           <!-- User name — smaller, lighter -->
-          <p id="username-display" class="text-lg font-medium muted mt-2 pb-3 tracking-wide"></p>
+          <p id="username-display" class="text-lg font-medium muted mt-4 pb-3 tracking-wide"></p>
 
           <!-- Name input row -->
-          <div class="mt-2 pb-3 w-full max-w-sm">
+          <div class="pb-3 w-full max-w-sm">
             <div id="name-input-row" class="flex gap-2 w-full">
               <input
                 id="username-input"
@@ -319,13 +319,24 @@
       </div>
     </footer>
 
-    <!-- Toast notification -->
+    <!-- Toast notification — top-right, below navbar -->
     <div
       id="toast"
-      class="fixed bottom-6 left-1/2 -translate-x-1/2 text-white text-sm px-5 py-3 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 toast-bg"
+      class="fixed top-16 right-4 rounded-xl shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 toast-bg overflow-hidden max-w-xs w-72 mt-6"
       role="status"
       aria-live="polite"
-    ></div>
+    >
+      <!-- Toast header -->
+      <div class="toast-header flex items-center justify-between px-4 py-2">
+        <span class="text-xs font-semibold uppercase tracking-widest opacity-80">System Message</span>
+        <i class="fa-solid fa-xmark text-xs opacity-60 cursor-pointer" id="toast-close" aria-label="Close"></i>
+      </div>
+      <!-- Toast body -->
+      <div class="toast-body flex items-center gap-3 px-4 py-3">
+        <i id="toast-icon" class="text-lg shrink-0"></i>
+        <span id="toast-msg" class="text-sm leading-snug"></span>
+      </div>
+    </div>
 
     <!-- Scroll-to-top button -->
     <button
