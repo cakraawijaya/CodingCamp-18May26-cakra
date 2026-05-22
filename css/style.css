@@ -413,7 +413,225 @@ html.dark .btn-icon-check:hover { background: #14532d; }
 #timer-status { font-size: 0.75rem; color: var(--text-faint); }
 
 /* ── Responsive ── */
-@media (max-width: 640px) {
-  .card { padding: 1.125rem; }
-  #timer-display { font-size: 3.5rem; }
+
+/* ── Desktop (≥ 1280px) — baseline, already handled above ── */
+@media (min-width: 1280px) {
+  #main-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* ── Large tablet (1024px – 1279px) ── */
+@media (max-width: 1279px) and (min-width: 1024px) {
+  #main-content {
+    max-width: 90%;
+  }
+  #timer-display {
+    font-size: 5rem;
+  }
+}
+
+/* ── Small tablet (768px – 1023px) ── */
+@media (max-width: 1023px) and (min-width: 768px) {
+  #main-content {
+    max-width: 95%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .card {
+    padding: 1.25rem;
+  }
+  #timer-display {
+    font-size: 4.5rem;
+  }
+  #time {
+    font-size: 4rem;
+  }
+  #greeting-text {
+    font-size: 2.25rem;
+  }
+}
+
+/* ── Large phone (480px – 767px) ── */
+@media (max-width: 767px) and (min-width: 480px) {
+  #main-content {
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+    margin-top: 1.25rem;
+  }
+  .card {
+    padding: 1.125rem;
+  }
+  #timer-display {
+    font-size: 3.75rem;
+  }
+  #time {
+    font-size: 3.25rem;
+  }
+  #greeting-text {
+    font-size: 1.875rem;
+  }
+
+  /* Timer controls — stack vertically */
+  #focus-timer .flex.gap-3[role="group"] {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 14rem;
+  }
+  #focus-timer .flex.gap-3[role="group"] .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Duration row — wrap */
+  #focus-timer .flex.items-center.gap-2:first-child {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Add-task form — stack */
+  #add-task-form {
+    flex-direction: column;
+  }
+  #add-task-form .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Add-link form — already flex-col on sm, reinforce */
+  #add-link-form {
+    flex-direction: column;
+  }
+  #add-link-form .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Name input row — stack */
+  #name-input-row {
+    flex-direction: column;
+  }
+  #name-input-row .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  #name-input-row .input {
+    width: 100%;
+  }
+}
+
+/* ── Small phone (≤ 479px) ── */
+@media (max-width: 479px) {
+  #main-content {
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+    margin-top: 1rem;
+  }
+  .card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+  #timer-display {
+    font-size: 3rem;
+  }
+  #time {
+    font-size: 2.75rem;
+  }
+  #greeting-text {
+    font-size: 1.625rem;
+  }
+  #username-display {
+    font-size: 1rem;
+  }
+  .section-title {
+    font-size: 0.8125rem;
+  }
+
+  /* Timer controls — stack vertically, full width */
+  #focus-timer .flex.gap-3[role="group"] {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  #focus-timer .flex.gap-3[role="group"] .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Duration row — wrap and center */
+  #focus-timer .flex.items-center.gap-2:first-child {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  /* Add-task form — stack */
+  #add-task-form {
+    flex-direction: column;
+  }
+  #add-task-form .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Add-link form — stack */
+  #add-link-form {
+    flex-direction: column;
+  }
+  #add-link-form .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Name input row — stack */
+  #name-input-row {
+    flex-direction: column;
+  }
+  #name-input-row .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  #name-input-row .input {
+    width: 100%;
+  }
+
+  /* Task item — tighten spacing */
+  .task-item {
+    padding: 0.5rem 0.625rem;
+    gap: 0.5rem;
+  }
+  .task-text {
+    font-size: 0.875rem;
+  }
+
+  /* Quick link pills — full width on tiny screens */
+  .link-btn {
+    width: 100%;
+    justify-content: space-between;
+    border-radius: 0.625rem;
+  }
+
+  /* Footer text */
+  .footer .text-sm {
+    font-size: 0.8125rem;
+  }
+  .footer .text-xs {
+    font-size: 0.6875rem;
+    text-align: center;
+  }
+
+  /* Navbar title — shrink slightly */
+  header h1 {
+    font-size: 1rem;
+  }
 }
