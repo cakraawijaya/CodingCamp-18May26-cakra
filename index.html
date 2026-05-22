@@ -1,9 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo-Life Dashboard</title>
+
+    <!-- ── SEO ── -->
+    <title>Todo-Life Dashboard — Personal Productivity Hub</title>
+    <meta name="description" content="A personal productivity dashboard with a focus timer, to-do list, quick links, and a greeting widget. All data stored locally in your browser." />
+    <meta name="keywords" content="todo list, pomodoro timer, productivity dashboard, focus timer, quick links, personal dashboard" />
+    <meta name="author" content="Todo-Life Dashboard" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ── Open Graph ── -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content="Todo-Life Dashboard — Personal Productivity Hub" />
+    <meta property="og:description" content="Manage your day with a focus timer, to-do list, quick links, and a personalized greeting. No account needed." />
+    <meta property="og:locale"      content="en_US" />
+
+    <!-- ── Twitter Card ── -->
+    <meta name="twitter:card"        content="summary" />
+    <meta name="twitter:title"       content="Todo-Life Dashboard" />
+    <meta name="twitter:description" content="Personal productivity hub — focus timer, tasks, quick links, all in one page." />
+
+    <!-- ── Theme color ── -->
+    <meta name="theme-color" content="#3b82f6" />
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,101 +41,212 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
 
-  <body class="min-h-screen bg-gradient-to-br from-slate-100 to-blue-50 font-sans">
+  <!--
+    body: flex column, min full screen height.
+    pb-16 reserves space above the fixed footer.
+  -->
+  <body class="flex flex-col min-h-screen">
 
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-10">
-      <div class="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3">
-        <i class="fa-solid fa-gauge-high text-blue-500 text-xl"></i>
-        <h1 class="text-xl font-bold text-slate-800 tracking-tight">Todo-Life Dashboard</h1>
+    <!-- ══════════════════════════════════════════
+         NAVBAR — sticky, transparent on scroll
+         ══════════════════════════════════════════ -->
+    <header id="navbar" class="navbar sticky top-0 z-50 transition-all duration-300">
+      <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
+        <i class="fa-solid fa-gauge-high text-blue-400 text-xl" aria-hidden="true"></i>
+        <h1 class="text-xl font-bold tracking-tight flex-1">Todo-Life Dashboard</h1>
+
+        <!-- Dark mode toggle -->
+        <button
+          id="btn-theme"
+          class="btn-icon btn-icon-theme"
+          aria-label="Toggle dark mode"
+          title="Toggle dark mode"
+        >
+          <i id="theme-icon" class="fa-solid fa-moon"></i>
+        </button>
       </div>
     </header>
 
-    <!-- Main grid -->
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 max-w-4xl mx-auto mt-6 pb-12">
+    <!-- ══════════════════════════════════════════
+         MAIN CONTENT
+         Layout (all centered, max-w-5xl):
+           Row 1 — Greeting        (full width)
+           Row 2 — Timer | Todo    (50% / 50%)
+           Row 3 — Quick Links     (full width)
+         ══════════════════════════════════════════ -->
+    <main
+      id="main-content"
+      class="flex-1 w-full max-w-5xl mx-auto px-4 mt-8 mb-4 space-y-6"
+      aria-label="Dashboard content"
+    >
 
-      <!-- ── Greeting Widget ── -->
-      <section id="greeting" class="card">
-        <h2 class="section-title">
-          <i class="fa-regular fa-sun text-amber-400"></i>
+      <!-- ── Row 1: Greeting (full width) ── -->
+      <section id="greeting" class="card" aria-labelledby="greeting-heading">
+        <h2 id="greeting-heading" class="section-title">
+          <i class="fa-regular fa-sun text-amber-400" aria-hidden="true"></i>
           Greeting
         </h2>
-        <div class="flex flex-col items-center justify-center py-4 gap-1">
-          <p id="time" class="text-5xl font-mono font-bold text-slate-800 tabular-nums">00:00</p>
-          <p id="date" class="text-sm text-slate-500 mt-1">Loading…</p>
-          <p id="greeting-text" class="text-2xl font-semibold text-blue-600 mt-3">Hello!</p>
+        <div class="flex flex-col items-center justify-center text-center py-6 gap-0">
+
+          <!-- Time -->
+          <p id="time" class="text-6xl font-mono font-bold tabular-nums leading-none">00:00</p>
+
+          <!-- Date -->
+          <p id="date" class="text-base muted mt-3 tracking-wide">Loading…</p>
+
+          <!-- Spacer -->
+          <div class="my-6 w-32 h-0.5 rounded-full bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-80 shadow-[0_0_8px_2px_rgba(96,165,250,0.4)]"></div>
+
+          <!-- Greeting phrase — bold, large -->
+          <p id="greeting-text" class="text-4xl font-extrabold text-blue-500 mt-2 leading-tight tracking-tight">Hello!</p>
+
+          <!-- User name — smaller, lighter -->
+          <p id="username-display" class="text-lg font-medium muted mt-2 tracking-wide"></p>
+
+          <!-- Spacer -->
+          <div class="mt-6 w-full max-w-xs">
+            <!-- Name input + save button — same height, full-width row -->
+            <div id="name-input-row" class="flex gap-2 w-full">
+              <input
+                id="username-input"
+                type="text"
+                placeholder="Enter your name…"
+                class="input flex-1 text-center text-sm h-10"
+                maxlength="30"
+                autocomplete="given-name"
+                aria-label="Your name"
+              />
+              <button id="btn-save-name" class="btn btn-blue text-sm h-10 px-4 shrink-0">
+                <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+                <span>Save</span>
+              </button>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      <!-- ── Focus Timer ── -->
-      <section id="focus-timer" class="card">
-        <h2 class="section-title">
-          <i class="fa-regular fa-clock text-rose-400"></i>
-          Focus Timer
-        </h2>
-        <div class="flex flex-col items-center gap-5 py-4">
-          <div id="timer-display" class="text-6xl font-mono font-bold text-slate-800 tabular-nums">
-            25:00
+      <!-- ── Row 2: Timer + Todo (50/50) ── -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Focus Timer -->
+        <section id="focus-timer" class="card" aria-labelledby="timer-heading">
+          <h2 id="timer-heading" class="section-title">
+            <i class="fa-regular fa-clock text-rose-400" aria-hidden="true"></i>
+            Focus Timer
+          </h2>
+          <div class="flex flex-col items-center gap-4 py-2">
+
+            <!-- Custom duration -->
+            <div class="flex items-center gap-2">
+              <label for="timer-minutes" class="text-sm muted">Duration:</label>
+              <input
+                id="timer-minutes"
+                type="number"
+                min="1"
+                max="60"
+                value="25"
+                class="input w-16 text-center text-sm"
+                aria-label="Timer duration in minutes"
+              />
+              <span class="text-sm muted">min</span>
+              <button id="btn-set-timer" class="btn btn-slate py-1 px-3 text-xs">
+                <i class="fa-solid fa-check" aria-hidden="true"></i> Set
+              </button>
+            </div>
+
+            <div
+              id="timer-display"
+              class="text-6xl font-mono font-bold tabular-nums"
+              role="timer"
+              aria-live="off"
+              aria-label="Timer display"
+            >
+              25:00
+            </div>
+
+            <div class="flex gap-3" role="group" aria-label="Timer controls">
+              <button id="btn-start" class="btn btn-green">
+                <i class="fa-solid fa-play" aria-hidden="true"></i> Start
+              </button>
+              <button id="btn-stop" class="btn btn-amber hidden">
+                <i class="fa-solid fa-pause" aria-hidden="true"></i> Stop
+              </button>
+              <button id="btn-reset" class="btn btn-slate">
+                <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset
+              </button>
+            </div>
+
+            <p id="timer-status" class="text-xs muted italic" aria-live="polite">Ready to focus</p>
           </div>
-          <div class="flex gap-3">
-            <button id="btn-start" class="btn btn-green">
-              <i class="fa-solid fa-play"></i> Start
-            </button>
-            <button id="btn-stop" class="btn btn-amber hidden">
-              <i class="fa-solid fa-pause"></i> Stop
-            </button>
-            <button id="btn-reset" class="btn btn-slate">
-              <i class="fa-solid fa-rotate-left"></i> Reset
-            </button>
+        </section>
+
+        <!-- To-Do List -->
+        <section id="todo-list" class="card" aria-labelledby="todo-heading">
+          <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <h2 id="todo-heading" class="section-title mb-0">
+              <i class="fa-solid fa-list-check text-violet-400" aria-hidden="true"></i>
+              To-Do List
+            </h2>
+
+            <!-- Sort control -->
+            <div class="flex items-center gap-2">
+              <label for="sort-select" class="text-xs muted whitespace-nowrap">
+                <i class="fa-solid fa-arrow-up-wide-short" aria-hidden="true"></i> Sort:
+              </label>
+              <select id="sort-select" class="input text-sm py-1 px-2" aria-label="Sort tasks">
+                <option value="default">Default</option>
+                <option value="az">A → Z</option>
+                <option value="za">Z → A</option>
+                <option value="pending">Pending first</option>
+                <option value="done">Done first</option>
+              </select>
+            </div>
           </div>
-          <p id="timer-status" class="text-xs text-slate-400 italic">Ready to focus</p>
-        </div>
-      </section>
 
-      <!-- ── To-Do List ── -->
-      <section id="todo-list" class="card md:col-span-2">
-        <h2 class="section-title">
-          <i class="fa-solid fa-list-check text-violet-400"></i>
-          To-Do List
-        </h2>
+          <!-- Add task form -->
+          <form id="add-task-form" class="flex gap-2 mb-4 pb-2" novalidate aria-label="Add new task">
+            <input
+              id="task-input"
+              type="text"
+              placeholder="Add a new task…"
+              class="input flex-1"
+              autocomplete="off"
+              aria-label="New task description"
+            />
+            <button type="submit" class="btn btn-blue" aria-label="Add task">
+              <i class="fa-solid fa-plus" aria-hidden="true"></i>
+              <span class="hidden sm:inline">Add</span>
+            </button>
+          </form>
+          <p id="task-error" class="text-red-500 text-sm mb-3 hidden" role="alert">
+            <i class="fa-solid fa-circle-exclamation mr-1" aria-hidden="true"></i>
+            <span id="task-error-msg">Task description cannot be empty.</span>
+          </p>
 
-        <!-- Add task form -->
-        <form id="add-task-form" class="flex gap-2 mb-2" novalidate>
-          <input
-            id="task-input"
-            type="text"
-            placeholder="Add a new task…"
-            class="input flex-1"
-            autocomplete="off"
-          />
-          <button type="submit" class="btn btn-blue">
-            <i class="fa-solid fa-plus"></i>
-            <span class="hidden sm:inline">Add</span>
-          </button>
-        </form>
-        <p id="task-error" class="text-red-500 text-sm mb-3 hidden">
-          <i class="fa-solid fa-circle-exclamation mr-1"></i>Task description cannot be empty.
-        </p>
+          <!-- Task list -->
+          <ul id="task-list" class="flex flex-col gap-2" aria-label="Task list" aria-live="polite"></ul>
+        </section>
 
-        <!-- Task list -->
-        <ul id="task-list" class="flex flex-col gap-2"></ul>
-      </section>
+      </div><!-- end row 2 -->
 
-      <!-- ── Quick Links ── -->
-      <section id="quick-links" class="card md:col-span-2">
-        <h2 class="section-title">
-          <i class="fa-solid fa-link text-teal-400"></i>
+      <!-- ── Row 3: Quick Links (50% width, centered) ── -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section id="quick-links" class="card md:col-start-1" aria-labelledby="links-heading">
+        <h2 id="links-heading" class="section-title">
+          <i class="fa-solid fa-link text-teal-400" aria-hidden="true"></i>
           Quick Links
         </h2>
 
         <!-- Add link form -->
-        <form id="add-link-form" class="flex flex-col sm:flex-row gap-2 mb-2" novalidate>
+        <form id="add-link-form" class="flex flex-col sm:flex-row gap-2 mb-4 pb-3" novalidate aria-label="Add new quick link">
           <input
             id="link-label-input"
             type="text"
             placeholder="Label (e.g. GitHub)"
             class="input flex-1"
             autocomplete="off"
+            aria-label="Link label"
           />
           <input
             id="link-url-input"
@@ -123,26 +254,44 @@
             placeholder="URL (e.g. github.com)"
             class="input flex-1"
             autocomplete="off"
+            aria-label="Link URL"
           />
-          <button type="submit" class="btn btn-blue">
-            <i class="fa-solid fa-plus"></i>
+          <button type="submit" class="btn btn-blue" aria-label="Add link">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
             <span class="hidden sm:inline">Add</span>
           </button>
         </form>
-        <p id="link-error" class="text-red-500 text-sm mb-3 hidden">
-          <i class="fa-solid fa-circle-exclamation mr-1"></i>Both label and URL are required.
+        <p id="link-error" class="text-red-500 text-sm mb-3 hidden" role="alert">
+          <i class="fa-solid fa-circle-exclamation mr-1" aria-hidden="true"></i>Both label and URL are required.
         </p>
 
         <!-- Links container -->
-        <div id="links-container" class="flex flex-wrap gap-2"></div>
+        <div id="links-container" class="flex flex-wrap gap-4 mt-1" aria-label="Saved quick links" aria-live="polite"></div>
       </section>
+      </div><!-- end row 3 -->
 
     </main>
+
+    <!-- ══════════════════════════════════════════
+         FOOTER — flows with page, not fixed
+         ══════════════════════════════════════════ -->
+    <footer class="footer mt-10" role="contentinfo">
+      <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col items-center justify-center gap-1 text-sm">
+        <p class="font-medium"><strong>Todo-Life Dashboard</strong></p>
+        <p class="muted text-xs">
+          &copy; <span id="footer-year"></span> All rights reserved.
+          Created by <span class="font-medium">Devan Cakra Mudra Wijaya</span>.
+          Powered by <span class="font-semibold text-blue-500">KIRO</span>.
+        </p>
+      </div>
+    </footer>
 
     <!-- Toast notification -->
     <div
       id="toast"
-      class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-sm px-5 py-3 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50"
+      class="fixed bottom-6 left-1/2 -translate-x-1/2 text-white text-sm px-5 py-3 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 toast-bg"
+      role="status"
+      aria-live="polite"
     ></div>
 
     <script src="js/app.js" defer></script>
